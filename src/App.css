@@ -1,3 +1,24 @@
 .App {
   
 }
+
+.field {
+  width: 20vw;
+  height: 20vw;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 5px;
+  background: lightslategray;
+  user-select: none;
+}
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: gold;
+  transition: background .2s;
+}
+.cell:hover {
+  background: khaki;
+}
