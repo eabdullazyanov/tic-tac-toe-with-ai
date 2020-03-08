@@ -14,6 +14,7 @@ function App() {
   );
   return (
     <div className="App">
+      <div className="appInner">
       {(() => {
         switch (appStatus) {
           case APP_STATUS_MAIN_MENU: return <MainMenu startGame={startGame} />;
@@ -22,6 +23,7 @@ function App() {
           default: return null;
         }
       })()}
+      </div>
     </div>
   );
 }
