@@ -1,11 +1,11 @@
 const CELLS_NUMBER = 9;
 
-const hasWon = (playerIndex, field) => {
+const hasWon = (player, field) => {
   const rows = [0, 0, 0];
   const cols = [0, 0, 0];
   const diagonals = [0, 0];
   for (let i = 0; i < CELLS_NUMBER; i++) {
-    if (field[i] !== playerIndex) continue;
+    if (field[i] !== player) continue;
 
     const rowIndex = Math.floor(i / 3);
     rows[rowIndex]++;
@@ -25,31 +25,62 @@ const hasWon = (playerIndex, field) => {
   return false;
 }
 
-export const createTree = () => {
-  const generateChildren = (node, field, playerIndex) => {
-    const children = [];
-    for (let i = 0; i < field.length; i++) {
-      if (field[i] != null) continue;
-      field[i] = playerIndex;
-      children[i] = {
-        value: 0,
-      };
-      if (hasWon(playerIndex, field)) {
-        children[i].value = playerIndex === 0 ? 10 : -10;
-        node.value = children[i].value;
-      } else {
-        const nextPlayerIndex = playerIndex === 0 ? 1 : 0;
-        generateChildren(children[i], field, nextPlayerIndex);
-      }
-      field[i] = null;
-    }
-    node.children = children;
+const MAX = 0;
+const MIN = 1;
 
-    return node;
+const players = {
+  [MAX]: {
+    winMark: 1,
+    getBestChild: children => children.reduce(
+      (acc, child) => Math.max(acc, child.value),
+      Number.NEGATIVE_INFINITY,
+    ),
+  },
+  [MIN]: {
+    winMark: -1,
+    getBestChild: children => children.reduce(
+      (acc, child) => Math.min(acc, child.value),
+      Number.POSITIVE_INFINITY,
+    ),
+  },
+}
+
+const getOpponent = player => player === MAX ? MIN : MAX;
+
+const generateChildren = (mutableField, currentPlayer) => {
+  const children = [];
+
+  for (let i = 0; i < mutableField.length; i++) {
+    if (mutableField[i] != null) continue;
+    mutableField[i] = currentPlayer;
+    children[i] = {};
+    if (hasWon(currentPlayer, mutableField)) {
+      children[i].value = players[currentPlayer].winMark;
+    } else {
+      generateNextPossibleMoves(children[i], mutableField, getOpponent(currentPlayer));
+    }
+    mutableField[i] = null;
   }
 
-  const currentField = new Array(CELLS_NUMBER);
-  const tree = generateChildren({}, currentField, 0);
+  return children;
+};
+
+const generateNextPossibleMoves = (node, mutableField, currentPlayer) => {
+  const children = generateChildren(mutableField, currentPlayer);
+
+  if (children.length === 0) {
+    node.value = 0;
+    node.tie = true;
+  } else {
+    node.value = players[currentPlayer].getBestChild(children);
+    node.children = children;
+  }
+}
+
+export const createTree = () => {
+  const mutableField = new Array(CELLS_NUMBER);
+  const tree = {};
+  generateNextPossibleMoves(tree, mutableField, MAX);
 
   return tree;
 }
