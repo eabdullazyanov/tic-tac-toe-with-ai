@@ -51,5 +51,5 @@ export const createTree = () => {
   const currentField = new Array(CELLS_NUMBER);
   const tree = generateChildren({}, currentField, 0);
 
-  console.log('tree', tree);
+  return tree;
 }

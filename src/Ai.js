@@ -1,10 +1,13 @@
 export default class {
   delay = 1000;
   getBestMove(node){
-    let bestKey = null;
-    for (const key in node) {
-      if (!bestKey || node[key].winChance > node[bestKey].winChance) bestKey = key;
+    let firstAvailable;
+    console.log('node', node);
+    for (let i = 0; i < node.children.length; i++) {
+      console.log('i', i);
+      if (node.children[i]?.value === node.value) return i;
     }
-    return bestKey;
+
+    return null;
   }
 }

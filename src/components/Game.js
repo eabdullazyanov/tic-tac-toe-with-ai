@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import shortid from 'shortid';
 
-import createTreeOfAllPossibleMoves from '../utils/createTreeOfAllPossibleMoves';
+import { createTree } from '../utils/minimax';
 import Ai from '../Ai';
 
 const FIELD_SIZE = 3;
@@ -77,7 +77,7 @@ const hasWon = (player, field) => {
 const Game = () => {
   const [field, updateField] = useState(generateEmptyField);
   const [whoseMove, setWhoseMove] = useState(0);
-  const [tree] = useState(() => createTreeOfAllPossibleMoves(FIELD_SIZE, PLAYERS, 0));
+  const [tree] = useState(() => createTree());
   const [currentTreeNode, setCurrentTreeNode] = useState(tree);
   const [ai] = useState(() => new Ai(tree));
   const [winner, setWinner] = useState(null);
@@ -106,6 +106,7 @@ const Game = () => {
     () => {
       const bestMove = ai.getBestMove(currentTreeNode);
       makeMove(bestMove);
+      setCurrentTreeNode(currentTreeNode.children[bestMove]);
     },
     [ai, currentTreeNode, makeMove]
   );
@@ -116,7 +117,7 @@ const Game = () => {
       if (field[cellIdx].occupiedBy != null) return;
   
       makeMove(cellIdx);
-      setCurrentTreeNode(currentTreeNode[cellIdx]);
+      setCurrentTreeNode(currentTreeNode.children[cellIdx]);
     },
     [field, makeMove, currentTreeNode, setCurrentTreeNode],
   );
