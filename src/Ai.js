@@ -1,13 +1,17 @@
-export default class {
-  delay = 1000;
-  getBestMove(node){
-    let firstAvailable;
-    console.log('node', node);
-    for (let i = 0; i < node.children.length; i++) {
-      console.log('i', i);
-      if (node.children[i]?.value === node.value) return i;
-    }
+import { MAX, MIN } from './constants'
 
-    return null;
+const getBestChildIndex = (role, children) => children?.reduce((bestI, currentChild, i) => {
+  if (
+    bestI === null
+    || role === MAX && currentChild.value > children[bestI].value
+    || role === MIN && currentChild.value < children[bestI].value
+  ) {
+    return i;
   }
-}
+
+  return bestI;
+}, null);
+
+export default {
+  getBestChildIndex,
+};

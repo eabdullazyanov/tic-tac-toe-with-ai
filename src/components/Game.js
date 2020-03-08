@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import shortid from 'shortid';
 
-import { FIELD_SIZE, CELLS_NUMBER } from '../constants'
+import { FIELD_SIZE, CELLS_NUMBER, MAX, MIN } from '../constants'
 import createMinimaxTree from '../utils/createMinimaxTree';
+import { hasWon, getOpponent } from '../utils';
 import Ai from '../Ai';
 
 const PLAYERS = [
@@ -25,59 +26,11 @@ const generateEmptyCell = () => ({
 
 const generateEmptyField = () => new Array(CELLS_NUMBER).fill(null).map(generateEmptyCell);
 
-const hasWon = (player, field) => {
-  const countOccupiedFieldsByColumn = new Array(FIELD_SIZE).fill(0);
-  let thereAreFailedFieldsInRow;
-
-  const diagonals = [
-    {
-      countFields: 0,
-      includesCell: (cellIndex, rowIndex) => cellIndex + rowIndex === FIELD_SIZE - 1,
-    },
-    {
-      countFields: 0,
-      includesCell: (cellIndex, rowIndex) => cellIndex === rowIndex,
-    },
-  ];
-
-  for (let i = 0; i < field.length; i++) {
-    const cellIndex = i % FIELD_SIZE;
-    const rowIndex = Math.floor(i / FIELD_SIZE);
-
-    if (cellIndex === 0) {
-      if (thereAreFailedFieldsInRow === null) return true;
-      thereAreFailedFieldsInRow = null;
-    }
-
-    const cell = field[i];
-    if (cell.occupiedBy === player) {
-      countOccupiedFieldsByColumn[cellIndex]++;
-      diagonals.forEach((diagonal) => {
-        if (diagonal.includesCell(cellIndex, rowIndex)) diagonal.countFields++;
-      });
-    } else {
-      thereAreFailedFieldsInRow = true;
-    }
-  }
-  for (let i = 0; i < countOccupiedFieldsByColumn.length; i++) {
-    if (countOccupiedFieldsByColumn[i] === FIELD_SIZE) return true;
-  }
-
-  for (let i = 0; i < diagonals.length; i++) {
-    if (diagonals[i].countFields === FIELD_SIZE) return true;
-  }
-
-  return false;
-};
-
-
-
 const Game = () => {
   const [field, updateField] = useState(generateEmptyField);
-  const [whoseMove, setWhoseMove] = useState(0);
+  const [whoseMove, setWhoseMove] = useState(MAX);
   const [tree] = useState(() => createMinimaxTree());
   const [currentTreeNode, setCurrentTreeNode] = useState(tree);
-  const [ai] = useState(() => new Ai(tree));
   const [winner, setWinner] = useState(null);
 
   const makeMove = useCallback(
@@ -87,12 +40,12 @@ const Game = () => {
         ...updatedField[cellIdx],
         occupiedBy: PLAYERS[whoseMove],
       };
-  
+
       if (hasWon(PLAYERS[whoseMove], updatedField)) {
         console.log('has won');
         setWinner(whoseMove);
       } else {
-        setWhoseMove(whoseMove + 1 < PLAYERS.length ? whoseMove + 1 : 0);
+        setWhoseMove(getOpponent(whoseMove));
       }
   
       updateField(updatedField);
@@ -102,11 +55,11 @@ const Game = () => {
 
   const makeAiMove = useCallback(
     () => {
-      const bestMove = ai.getBestMove(currentTreeNode);
+      const bestMove = Ai.getBestChildIndex(MIN, currentTreeNode.children);
       makeMove(bestMove);
       setCurrentTreeNode(currentTreeNode.children[bestMove]);
     },
-    [ai, currentTreeNode, makeMove]
+    [currentTreeNode, makeMove]
   );
 
   const onCellClick = useCallback(
