@@ -18,7 +18,7 @@ const players = {
   },
 }
 
-const generateChildren = (mutableField, currentPlayer) => {
+function generateChildren (mutableField, currentPlayer) {
   const children = [];
 
   for (let i = 0; i < mutableField.length; i++) {
@@ -36,7 +36,7 @@ const generateChildren = (mutableField, currentPlayer) => {
   return children;
 };
 
-const generateNextPossibleMoves = (node, mutableField, currentPlayer) => {
+function generateNextPossibleMoves (node, mutableField, currentPlayer) {
   const children = generateChildren(mutableField, currentPlayer);
 
   if (children.length === 0) {
@@ -48,7 +48,7 @@ const generateNextPossibleMoves = (node, mutableField, currentPlayer) => {
   }
 }
 
-export const createTree = () => {
+export default function createMinimaxTree () {
   const mutableField = new Array(CELLS_NUMBER);
   const tree = {};
   generateNextPossibleMoves(tree, mutableField, MAX);

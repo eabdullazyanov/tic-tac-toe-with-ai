@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import shortid from 'shortid';
 
 import { FIELD_SIZE, CELLS_NUMBER } from '../constants'
-import { createTree } from '../utils/minimax';
+import createMinimaxTree from '../utils/createMinimaxTree';
 import Ai from '../Ai';
 
 const PLAYERS = [
@@ -75,7 +75,7 @@ const hasWon = (player, field) => {
 const Game = () => {
   const [field, updateField] = useState(generateEmptyField);
   const [whoseMove, setWhoseMove] = useState(0);
-  const [tree] = useState(() => createTree());
+  const [tree] = useState(() => createMinimaxTree());
   const [currentTreeNode, setCurrentTreeNode] = useState(tree);
   const [ai] = useState(() => new Ai(tree));
   const [winner, setWinner] = useState(null);
