@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import shortid from 'shortid';
 
+import { FIELD_SIZE, CELLS_NUMBER } from '../constants'
 import { createTree } from '../utils/minimax';
 import Ai from '../Ai';
-
-const FIELD_SIZE = 3;
-const CELLS_NUMBER = FIELD_SIZE ** 2;
 
 const PLAYERS = [
   {

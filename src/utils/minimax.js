@@ -1,4 +1,4 @@
-const CELLS_NUMBER = 9;
+import { FIELD_SIZE, CELLS_NUMBER } from '../constants'
 
 const hasWon = (player, field) => {
   const rows = [0, 0, 0];
@@ -7,22 +7,16 @@ const hasWon = (player, field) => {
   for (let i = 0; i < CELLS_NUMBER; i++) {
     if (field[i] !== player) continue;
 
-    const rowIndex = Math.floor(i / 3);
+    const rowIndex = Math.floor(i / FIELD_SIZE);
+    const colIndex = i % FIELD_SIZE;
+
     rows[rowIndex]++;
-    if (rows[rowIndex] === 3) return true;
-
-    const colIndex = i % 3;
     cols[colIndex]++;
-    if (cols[colIndex] === 3) return true;
-
     if (colIndex === rowIndex) diagonals[0]++;
-    if (diagonals[0] === 3) return true;
-
-    if (colIndex + rowIndex === 3 - 1) diagonals[1]++;
-    if (diagonals[1] === 3) return true;
+    if (colIndex + rowIndex === FIELD_SIZE - 1) diagonals[1]++;
   }
 
-  return false;
+  return Math.max(...rows, ...cols, ...diagonals) === FIELD_SIZE;
 }
 
 const MAX = 0;
