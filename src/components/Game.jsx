@@ -74,7 +74,7 @@ const Game = () => {
 
   useEffect(
     () => {
-      if (whoseMove !== 1) return null;
+      if (whoseMove !== 1) return undefined;
       const timer = setTimeout(makeAiMove, 500);
       return () => clearTimeout(timer);
     },
