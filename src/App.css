@@ -58,8 +58,10 @@
   font-size: 17vmin;
   color: tomato;
 }
-.cell:hover {
-  background: khaki;
+@media (hover: hover) {
+  .cell:hover {
+    background: khaki;
+  }
 }
 
 .statusBar {
