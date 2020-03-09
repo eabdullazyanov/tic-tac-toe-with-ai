@@ -1,22 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import shortid from 'shortid';
 
-import { CELLS_NUMBER, MAX, MIN } from '../constants';
+import {
+  CELLS_NUMBER, MAX, MIN, sign, name,
+} from '../constants';
 import createMinimaxTree from '../utils/createMinimaxTree';
 import { hasWon, getOpponent, getBestChildIndex } from '../utils';
-
-const PLAYERS = [
-  {
-    idx: 0,
-    name: 'Player 1',
-    sign: 'X',
-  },
-  {
-    idx: 1,
-    name: 'Player 2',
-    sign: 'O',
-  },
-];
 
 const generateEmptyCell = () => ({
   id: shortid.generate(),
@@ -26,7 +15,7 @@ const generateEmptyCell = () => ({
 const generateEmptyField = () => new Array(CELLS_NUMBER).fill(null).map(generateEmptyCell);
 
 const Game = () => {
-  const [field, updateField] = useState(generateEmptyField);
+  const [field, updateField] = useState(() => generateEmptyField());
   const [whoseMove, setWhoseMove] = useState(MAX);
   const [tree] = useState(() => createMinimaxTree());
   const [currentTreeNode, setCurrentTreeNode] = useState(tree);
@@ -37,10 +26,10 @@ const Game = () => {
       const updatedField = [...field];
       updatedField[cellIdx] = {
         ...updatedField[cellIdx],
-        occupiedBy: PLAYERS[whoseMove],
+        occupiedBy: whoseMove,
       };
 
-      if (hasWon(PLAYERS[whoseMove], updatedField)) {
+      if (hasWon(whoseMove, updatedField)) {
         setWinner(whoseMove);
       } else {
         setWhoseMove(getOpponent(whoseMove));
@@ -85,19 +74,19 @@ const Game = () => {
       <div className="field">
         {field.map(({ occupiedBy, id }) => (
           <div key={id} className="cell" onClick={() => onCellClick(id)}>
-            {occupiedBy && occupiedBy.sign}
+            {occupiedBy != null && sign[occupiedBy]}
           </div>
         ))}
       </div>
       <div>
         {winner !== null ? (
           <b>
-            {PLAYERS[whoseMove].name}
+            {name[whoseMove]}
             won!
           </b>
         ) : (
           <div>
-            {PLAYERS[whoseMove].name}
+            {name[whoseMove]}
             &apos;s turn
           </div>
         )}

@@ -8,6 +8,14 @@ export const winMark = {
   [MAX]: 1,
   [MIN]: -1,
 };
+export const sign = {
+  [MAX]: 'X',
+  [MIN]: 'O',
+};
+export const name = {
+  [MAX]: 'Player 1',
+  [MIN]: 'Player 2',
+};
 
 export const GAME_MODE_1_PLAYER_VS_AI = 'GAME_MODE_1_PLAYER_VS_AI';
 export const GAME_MODE_2_PLAYERS = 'GAME_MODE_2_PLAYERS';
