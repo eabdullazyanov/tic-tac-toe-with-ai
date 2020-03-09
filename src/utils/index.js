@@ -22,3 +22,20 @@ export function hasWon(player, field) {
 }
 
 export const getOpponent = player => (player === MAX ? MIN : MAX);
+
+export function getBestChildIndex(role, children) {
+  if (!children) return null;
+
+  return children.reduce((bestI, currentChild, i) => {
+    if (bestI === null) return i;
+    if (role === MAX && currentChild.value > children[bestI].value) return i;
+    if (role === MIN && currentChild.value < children[bestI].value) return i;
+
+    return bestI;
+  }, null);
+}
+
+export function getBestChildValue(role, children) {
+  const index = getBestChildIndex(role, children);
+  return children[index].value;
+}

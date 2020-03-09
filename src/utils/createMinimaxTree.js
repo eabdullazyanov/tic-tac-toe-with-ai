@@ -1,24 +1,7 @@
 /* eslint-disable no-param-reassign */
 
-import { CELLS_NUMBER, MAX, MIN } from '../constants';
-import { hasWon, getOpponent } from '.';
-
-const players = {
-  [MAX]: {
-    winMark: 1,
-    getBestChild: children => children.reduce(
-      (acc, child) => Math.max(acc, child.value),
-      Number.NEGATIVE_INFINITY,
-    ),
-  },
-  [MIN]: {
-    winMark: -1,
-    getBestChild: children => children.reduce(
-      (acc, child) => Math.min(acc, child.value),
-      Number.POSITIVE_INFINITY,
-    ),
-  },
-};
+import { CELLS_NUMBER, MAX, winMark } from '../constants';
+import { hasWon, getOpponent, getBestChildValue } from '.';
 
 function generateChildren(mutableField, currentPlayer) {
   const children = [];
@@ -28,7 +11,7 @@ function generateChildren(mutableField, currentPlayer) {
     mutableField[i] = currentPlayer;
     children[i] = {};
     if (hasWon(currentPlayer, mutableField)) {
-      children[i].value = players[currentPlayer].winMark;
+      children[i].value = winMark[currentPlayer];
     } else {
       generateNextPossibleMoves(children[i], mutableField, getOpponent(currentPlayer));
     }
@@ -43,9 +26,8 @@ function generateNextPossibleMoves(node, mutableField, currentPlayer) {
 
   if (children.length === 0) {
     node.value = 0;
-    node.tie = true;
   } else {
-    node.value = players[currentPlayer].getBestChild(children);
+    node.value = getBestChildValue(currentPlayer, children);
     node.children = children;
   }
 }

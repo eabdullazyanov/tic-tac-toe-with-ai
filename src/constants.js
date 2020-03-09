@@ -4,6 +4,11 @@ export const CELLS_NUMBER = FIELD_SIZE ** 2;
 export const MAX = 0;
 export const MIN = 1;
 
+export const winMark = {
+  [MAX]: 1,
+  [MIN]: -1,
+};
+
 export const GAME_MODE_1_PLAYER_VS_AI = 'GAME_MODE_1_PLAYER_VS_AI';
 export const GAME_MODE_2_PLAYERS = 'GAME_MODE_2_PLAYERS';
 

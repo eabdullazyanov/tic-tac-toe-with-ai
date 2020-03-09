@@ -3,8 +3,7 @@ import shortid from 'shortid';
 
 import { CELLS_NUMBER, MAX, MIN } from '../constants';
 import createMinimaxTree from '../utils/createMinimaxTree';
-import { hasWon, getOpponent } from '../utils';
-import Ai from '../Ai';
+import { hasWon, getOpponent, getBestChildIndex } from '../utils';
 
 const PLAYERS = [
   {
@@ -54,7 +53,7 @@ const Game = () => {
 
   const makeAiMove = useCallback(
     () => {
-      const bestMove = Ai.getBestChildIndex(MIN, currentTreeNode.children);
+      const bestMove = getBestChildIndex(MIN, currentTreeNode.children);
       makeMove(bestMove);
       setCurrentTreeNode(currentTreeNode.children[bestMove]);
     },
