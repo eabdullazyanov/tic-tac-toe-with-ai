@@ -1,5 +1,7 @@
+/* eslint-disable no-param-reassign */
+
 import { CELLS_NUMBER, MAX, MIN } from '../constants';
-import { hasWon, getOpponent } from './';
+import { hasWon, getOpponent } from '.';
 
 const players = {
   [MAX]: {
@@ -16,9 +18,9 @@ const players = {
       Number.POSITIVE_INFINITY,
     ),
   },
-}
+};
 
-function generateChildren (mutableField, currentPlayer) {
+function generateChildren(mutableField, currentPlayer) {
   const children = [];
 
   for (let i = 0; i < mutableField.length; i++) {
@@ -34,9 +36,9 @@ function generateChildren (mutableField, currentPlayer) {
   }
 
   return children;
-};
+}
 
-function generateNextPossibleMoves (node, mutableField, currentPlayer) {
+function generateNextPossibleMoves(node, mutableField, currentPlayer) {
   const children = generateChildren(mutableField, currentPlayer);
 
   if (children.length === 0) {
@@ -48,7 +50,7 @@ function generateNextPossibleMoves (node, mutableField, currentPlayer) {
   }
 }
 
-export default function createMinimaxTree () {
+export default function createMinimaxTree() {
   const mutableField = new Array(CELLS_NUMBER);
   const tree = {};
   generateNextPossibleMoves(tree, mutableField, MAX);

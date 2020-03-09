@@ -1,6 +1,8 @@
-import { FIELD_SIZE, CELLS_NUMBER, MAX, MIN } from '../constants';
+import {
+  FIELD_SIZE, CELLS_NUMBER, MAX, MIN,
+} from '../constants';
 
-export function hasWon (player, field) {
+export function hasWon(player, field) {
   const rows = [0, 0, 0];
   const cols = [0, 0, 0];
   const diagonals = [0, 0];
@@ -19,4 +21,4 @@ export function hasWon (player, field) {
   return Math.max(...rows, ...cols, ...diagonals) === FIELD_SIZE;
 }
 
-export const getOpponent = player => player === MAX ? MIN : MAX;
+export const getOpponent = player => (player === MAX ? MIN : MAX);

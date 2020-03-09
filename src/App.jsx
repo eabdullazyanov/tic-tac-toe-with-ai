@@ -15,14 +15,14 @@ function App() {
   return (
     <div className="App">
       <div className="appInner">
-      {(() => {
-        switch (appStatus) {
-          case APP_STATUS_MAIN_MENU: return <MainMenu startGame={startGame} />;
-          case APP_STATUS_LOADING: return null;
-          case APP_STATUS_GAME_IN_PROGRESS: return <Game />;
-          default: return null;
-        }
-      })()}
+        {(() => {
+          switch (appStatus) {
+            case APP_STATUS_MAIN_MENU: return <MainMenu startGame={startGame} />;
+            case APP_STATUS_LOADING: return null;
+            case APP_STATUS_GAME_IN_PROGRESS: return <Game />;
+            default: return null;
+          }
+        })()}
       </div>
     </div>
   );

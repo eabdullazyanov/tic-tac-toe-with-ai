@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import shortid from 'shortid';
 
-import { FIELD_SIZE, CELLS_NUMBER, MAX, MIN } from '../constants'
+import { CELLS_NUMBER, MAX, MIN } from '../constants';
 import createMinimaxTree from '../utils/createMinimaxTree';
 import { hasWon, getOpponent } from '../utils';
 import Ai from '../Ai';
@@ -35,22 +35,21 @@ const Game = () => {
 
   const makeMove = useCallback(
     (cellIdx) => {
-      let updatedField = [...field];
+      const updatedField = [...field];
       updatedField[cellIdx] = {
         ...updatedField[cellIdx],
         occupiedBy: PLAYERS[whoseMove],
       };
 
       if (hasWon(PLAYERS[whoseMove], updatedField)) {
-        console.log('has won');
         setWinner(whoseMove);
       } else {
         setWhoseMove(getOpponent(whoseMove));
       }
-  
+
       updateField(updatedField);
     },
-    [field, whoseMove, setWinner]
+    [field, whoseMove, setWinner],
   );
 
   const makeAiMove = useCallback(
@@ -59,14 +58,14 @@ const Game = () => {
       makeMove(bestMove);
       setCurrentTreeNode(currentTreeNode.children[bestMove]);
     },
-    [currentTreeNode, makeMove]
+    [currentTreeNode, makeMove],
   );
 
   const onCellClick = useCallback(
     (cellId) => {
       const cellIdx = field.findIndex(currentCell => currentCell.id === cellId);
       if (field[cellIdx].occupiedBy != null) return;
-  
+
       makeMove(cellIdx);
       setCurrentTreeNode(currentTreeNode.children[cellIdx]);
     },
@@ -75,12 +74,12 @@ const Game = () => {
 
   useEffect(
     () => {
-      if (whoseMove !== 1) return;
+      if (whoseMove !== 1) return null;
       const timer = setTimeout(makeAiMove, 500);
-      return () => clearTimeout(timer)
+      return () => clearTimeout(timer);
     },
     [whoseMove, currentTreeNode, makeAiMove],
-  )
+  );
 
   return (
     <div className="game">
@@ -93,16 +92,22 @@ const Game = () => {
       </div>
       <div>
         {winner !== null ? (
-          <b>{PLAYERS[whoseMove].name} won!</b>
+          <b>
+            {PLAYERS[whoseMove].name}
+            won!
+          </b>
         ) : (
-          <div>{PLAYERS[whoseMove].name}'s turn</div>
+          <div>
+            {PLAYERS[whoseMove].name}
+            &apos;s turn
+          </div>
         )}
       </div>
       <div>
-        <button>Reset</button>
+        <button type="button">Reset</button>
       </div>
     </div>
-  )
+  );
 };
 
 export default Game;
