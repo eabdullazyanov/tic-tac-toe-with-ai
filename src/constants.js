@@ -17,6 +17,11 @@ export const name = {
   [MIN]: 'Player 2',
 };
 
+export const PLAYER = MAX;
+export const AI = MIN;
+
+export const AI_DELAY = 500;
+
 export const GAME_MODE_1_PLAYER_VS_AI = 'GAME_MODE_1_PLAYER_VS_AI';
 export const GAME_MODE_2_PLAYERS = 'GAME_MODE_2_PLAYERS';
 

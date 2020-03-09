@@ -21,10 +21,13 @@ module.exports = {
   },
   plugins: [
     'react',
+    'react-hooks',
   ],
   rules: {
     "no-plusplus": "off",
     "no-continue": "off",
     "arrow-parens": "off",
+    "react-hooks/rules-of-hooks": 'error',
+    "react-hooks/exhaustive-deps": 'error',
   },
 };

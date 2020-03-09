@@ -32,10 +32,14 @@ function generateNextPossibleMoves(node, mutableField, currentPlayer) {
   }
 }
 
-export default function createMinimaxTree() {
+function createMinimaxTree() {
   const mutableField = new Array(CELLS_NUMBER);
   const tree = {};
   generateNextPossibleMoves(tree, mutableField, MAX);
 
   return tree;
 }
+
+const minimaxTree = createMinimaxTree();
+
+export default minimaxTree;
