@@ -2,7 +2,7 @@
   "name": "tic-tac-toe",
   "version": "0.1.0",
   "private": true,
-  "homepage": "eabdullazyanov.github.io/tic-tac-toe-with-ai",
+  "homepage": "http://eabdullazyanov.github.io/tic-tac-toe-with-ai",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
