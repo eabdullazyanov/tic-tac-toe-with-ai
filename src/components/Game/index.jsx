@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 
 import {
-  MAX, MIN, sign, name, AI, AI_DELAY,
+  MAX, sign, name, AI_DELAY,
 } from '../../constants';
 import minimaxTree from '../../utils/minimaxTree';
 import { getOpponent, getBestChildIndex } from '../../utils';
@@ -9,11 +10,18 @@ import {
   generateEmptyField, getCellIndex, getFieldAfterMove, isGameOver,
 } from './utils';
 
-const Game = () => {
-  const [gameResult, setGameResult] = useState();
+const Game = ({ ai, returnToMainMenu }) => {
+  const [gameResult, setGameResult] = useState(null);
   const [whoseMove, setWhoseMove] = useState(MAX);
   const [currentMinimaxNode, setCurrentMinimaxNode] = useState(minimaxTree);
   const [field, updateField] = useState(() => generateEmptyField());
+
+  const setInitialState = useCallback(() => {
+    setGameResult(null);
+    setWhoseMove(MAX);
+    setCurrentMinimaxNode(minimaxTree);
+    updateField(generateEmptyField());
+  }, []);
 
   const makeMove = useCallback((cellIndex) => {
     const fieldAfterMove = getFieldAfterMove(field, whoseMove, cellIndex);
@@ -30,22 +38,24 @@ const Game = () => {
   }, [field, whoseMove, currentMinimaxNode]);
 
   const onCellClick = useCallback((cellId) => {
+    if (whoseMove === ai) return;
+
     const cellIndex = getCellIndex(cellId, field);
     if (field[cellIndex].occupiedBy == null) makeMove(cellIndex);
-  }, [field, makeMove]);
+  }, [field, whoseMove, ai, makeMove]);
 
   const makeAiMove = useCallback(() => {
-    const bestMove = getBestChildIndex(MIN, currentMinimaxNode.children);
+    const bestMove = getBestChildIndex(ai, currentMinimaxNode.children);
     makeMove(bestMove);
-  }, [currentMinimaxNode, makeMove]);
+  }, [currentMinimaxNode, ai, makeMove]);
 
   useEffect(() => {
-    if (whoseMove !== AI || gameResult != null) return undefined;
+    if (whoseMove !== ai || gameResult != null) return undefined;
 
     const timer = setTimeout(makeAiMove, AI_DELAY);
 
     return () => clearTimeout(timer);
-  }, [whoseMove, gameResult, currentMinimaxNode, makeAiMove]);
+  }, [whoseMove, gameResult, ai, currentMinimaxNode, makeAiMove]);
 
   return (
     <div className="game">
@@ -56,28 +66,41 @@ const Game = () => {
           </div>
         ))}
       </div>
-      <div>
+      <div className="statusBar">
         {
         gameResult == null
           ? (
             <div>
-              {name[whoseMove]}
-              &apos;s turn
+              {`${name[whoseMove]}'s turn (${sign[whoseMove]})`}
             </div>
           )
-          : (
-            <b>
-              {name[gameResult]}
-              won!
-            </b>
-          )
+          : ' '
         }
       </div>
-      <div>
-        <button type="button">Reset</button>
-      </div>
+      {gameResult != null && (
+        <div className="gameOver">
+          <div className="message">
+            {
+              gameResult === 0
+                ? 'Tie!'
+                : `${name[gameResult]} win!`
+            }
+          </div>
+          <button type="button" onClick={setInitialState}>Play again</button>
+          <button type="button" onClick={returnToMainMenu}>Main Menu</button>
+        </div>
+      )}
     </div>
   );
+};
+
+Game.propTypes = {
+  ai: PropTypes.number,
+  returnToMainMenu: PropTypes.func.isRequired,
+};
+
+Game.defaultProps = {
+  ai: null,
 };
 
 export default Game;

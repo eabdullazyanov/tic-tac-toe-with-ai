@@ -2,13 +2,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  height: 100vmin;
 }
 .appInner {
   background-color: powderblue;
-  width: 80vh;
-  min-height: 80vh;
+  width: 90vmin;
+  height: 90vmin;
   border: steelblue solid 3px;
+  position: relative;
 }
 
 .mainMenu {
@@ -20,26 +21,27 @@
   flex-direction: column;
 }
 .mainMenu .gameTitle {
-  font-size: 88px;
+  font-size: 12vmin;
   font-weight: bold;
   font-style: italic;
-  margin: 60px 0;
+  margin: 8vmin 0;
   color: crimson;
+  text-shadow: 0 2px 2px rgba(0,0,0, .7);
 }
 .mainMenu button {
-  font-size: 24px;
+  font-size: 5vmin;
   color: crimson;
   background: gold;
 }
 .mainMenu button +button {
-  margin-top: 15px;
+  margin-top: 2vmin;
 }
 
 .field {
-  width: 75vh;
-  height: 75vh;
+  width: 85vmin;
+  height: 80vmin;
   display: grid;
-  margin: 10px auto 0;
+  margin: 2vmin auto 0;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   grid-gap: 5px;
@@ -53,7 +55,44 @@
   cursor: pointer;
   background: gold;
   transition: background .2s;
+  font-size: 17vmin;
+  color: tomato;
 }
 .cell:hover {
   background: khaki;
+}
+
+.statusBar {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 1vmin;
+  height: 4vmin;
+  font-size: 4vmin;
+}
+
+.gameOver {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(255, 255, 255, .5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.gameOver .message {
+  font-size: 10vmin;
+  font-weight: bold;
+  color: tomato;
+  text-shadow: 0 2px 2px rgba(0,0,0, .7);
+  margin-bottom: 5vmin;
+}
+.gameOver button {
+  font-size: 4vmin;
+}
+
+.gameOver button +button {
+  margin-top: 2vmin;
 }

@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-import { CELLS_NUMBER, MAX, winMark } from '../constants';
+import { CELLS_NUMBER, MAX } from '../constants';
 import { hasWon, getOpponent, getBestChildValue } from '.';
 
 function generateChildren(mutableField, currentPlayer) {
@@ -11,7 +11,7 @@ function generateChildren(mutableField, currentPlayer) {
     mutableField[i] = currentPlayer;
     children[i] = {};
     if (hasWon(currentPlayer, mutableField)) {
-      children[i].value = winMark[currentPlayer];
+      children[i].value = currentPlayer;
     } else {
       generateNextPossibleMoves(children[i], mutableField, getOpponent(currentPlayer));
     }
