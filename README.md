@@ -1,7 +1,7 @@
 ## Tic Tac Toe game with AI
 
-- Supports modern browsers including mobile browsers;
-- Implemented the Minimax algorithm for AI.
+- Supports modern browsers including mobile browsers
+- Implemented the Minimax algorithm for AI
 
 ### Used technologies
 - React w/ hooks
