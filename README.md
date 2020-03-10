@@ -1,4 +1,4 @@
-## Basic Tic Tac Toe game with AI
+## Tic Tac Toe game with AI
 
 - Supports modern browsers including mobile browsers;
 - Implemented the Minimax algorithm for AI.
