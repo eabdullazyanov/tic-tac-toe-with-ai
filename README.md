@@ -6,7 +6,7 @@
 ### Used technologies
 - React w/ hooks
 - ESLint
-- [shortid](http://localhost:3000)
+- [shortid](https://github.com/dylang/shortid)
 - GitHub Pages for deployment
 
 ### Demo
