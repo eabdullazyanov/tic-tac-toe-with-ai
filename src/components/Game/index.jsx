@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  MAX, sign, name, AI_DELAY,
+  MAX, sign, name, AI_DELAY, CENTRAL_CELL,
 } from '../../constants';
 import minimaxTree from '../../utils/minimaxTree';
 import { getOpponent, getBestChildIndex } from '../../utils';
@@ -15,12 +15,14 @@ const Game = ({ ai, returnToMainMenu }) => {
   const [whoseMove, setWhoseMove] = useState(MAX);
   const [currentMinimaxNode, setCurrentMinimaxNode] = useState(minimaxTree);
   const [field, updateField] = useState(() => generateEmptyField());
+  const [movesCount, setMovesCount] = useState(0);
 
   const setInitialState = useCallback(() => {
     setGameResult(null);
     setWhoseMove(MAX);
     setCurrentMinimaxNode(minimaxTree);
     updateField(generateEmptyField());
+    setMovesCount(0);
   }, []);
 
   const makeMove = useCallback((cellIndex) => {
@@ -35,7 +37,8 @@ const Game = ({ ai, returnToMainMenu }) => {
     } else {
       setWhoseMove(getOpponent(whoseMove));
     }
-  }, [field, whoseMove, currentMinimaxNode]);
+    setMovesCount(movesCount + 1);
+  }, [field, whoseMove, currentMinimaxNode, movesCount]);
 
   const onCellClick = useCallback((cellId) => {
     if (whoseMove === ai) return;
@@ -45,9 +48,11 @@ const Game = ({ ai, returnToMainMenu }) => {
   }, [field, whoseMove, ai, makeMove]);
 
   const makeAiMove = useCallback(() => {
-    const bestMove = getBestChildIndex(ai, currentMinimaxNode.children);
+    const bestMove = field[CENTRAL_CELL].occupiedBy == null && movesCount < 3
+      ? CENTRAL_CELL
+      : getBestChildIndex(ai, currentMinimaxNode.children);
     makeMove(bestMove);
-  }, [currentMinimaxNode, ai, makeMove]);
+  }, [currentMinimaxNode, ai, makeMove, field, movesCount]);
 
   useEffect(() => {
     if (whoseMove !== ai || gameResult != null) return undefined;

@@ -1,5 +1,6 @@
 export const FIELD_SIZE = 3;
 export const CELLS_NUMBER = FIELD_SIZE ** 2;
+export const CENTRAL_CELL = 4;
 
 export const MAX = 1;
 export const MIN = -1;
